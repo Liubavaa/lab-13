@@ -2,8 +2,8 @@
 File: linkedbst.py
 Author: Ken Lambert
 """
-import copy
 
+import copy
 from abstractcollection import AbstractCollection
 from bstnode import BSTNode
 from linkedstack import LinkedStack
