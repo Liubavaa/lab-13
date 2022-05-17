@@ -4,12 +4,12 @@ Author: Ken Lambert
 """
 
 import copy
-from abstractcollection import AbstractCollection
-from bstnode import BSTNode
-from linkedstack import LinkedStack
 from math import log
 from random import sample, shuffle
 from time import time
+from abstractcollection import AbstractCollection
+from bstnode import BSTNode
+from linkedstack import LinkedStack
 
 
 class LinkedBST(AbstractCollection):
@@ -28,7 +28,7 @@ class LinkedBST(AbstractCollection):
 
         def recurse(node, level):
             string = ""
-            if node != None:
+            if node is not None:
                 string += recurse(node.right, level + 1)
                 string += "| " * level
                 string += str(node.data) + "\n"
@@ -45,9 +45,9 @@ class LinkedBST(AbstractCollection):
             while not stack.isEmpty():
                 node = stack.pop()
                 yield node.data
-                if node.right != None:
+                if node.right is not None:
                     stack.push(node.right)
-                if node.left != None:
+                if node.left is not None:
                     stack.push(node.left)
 
     def preorder(self):
@@ -56,10 +56,10 @@ class LinkedBST(AbstractCollection):
 
     def inorder(self):
         """Supports an inorder traversal on a view of self."""
-        lyst = list()
+        lyst = []
 
         def recurse(node):
-            if node != None:
+            if node is not None:
                 recurse(node.left)
                 lyst.append(node.data)
                 recurse(node.right)
@@ -86,12 +86,11 @@ class LinkedBST(AbstractCollection):
         def recurse(node):
             if node is None:
                 return None
-            elif item == node.data:
+            if item == node.data:
                 return node.data
-            elif item < node.data:
+            if item < node.data:
                 return recurse(node.left)
-            else:
-                return recurse(node.right)
+            return recurse(node.right)
 
         return recurse(self._root)
 
@@ -108,13 +107,13 @@ class LinkedBST(AbstractCollection):
         def recurse(node):
             # New item is less, go left until spot is found
             if item < node.data:
-                if node.left == None:
+                if node.left is None:
                     node.left = BSTNode(item)
                 else:
                     recurse(node.left)
             # New item is greater or equal,
             # go right until spot is found
-            elif node.right == None:
+            elif node.right is None:
                 node.right = BSTNode(item)
             else:
                 recurse(node.right)
@@ -154,7 +153,8 @@ class LinkedBST(AbstractCollection):
                 parent.right = current_node.left
 
         # Begin main part of the method
-        if self.isEmpty(): return None
+        if self.isEmpty():
+            return None
 
         # Attempt to locate the node containing the item
         item_removed = None
@@ -176,7 +176,8 @@ class LinkedBST(AbstractCollection):
                 current_node = current_node.right
 
         # Return None if the item is absent
-        if item_removed == None: return None
+        if item_removed is None:
+            return None
 
         # The item is present, so remove its node
 
@@ -190,7 +191,7 @@ class LinkedBST(AbstractCollection):
         else:
 
             # Case 2: The node has no left child
-            if current_node.left == None:
+            if current_node.left is None:
                 new_child = current_node.right
 
                 # Case 3: The node has no right child
@@ -218,12 +219,12 @@ class LinkedBST(AbstractCollection):
         If item is in self, replaces it with newItem and
         returns the old item, or returns None otherwise."""
         probe = self._root
-        while probe != None:
+        while probe is not None:
             if probe.data == item:
                 old_data = probe.data
                 probe.data = new_item
                 return old_data
-            elif probe.data > item:
+            if probe.data > item:
                 probe = probe.left
             else:
                 probe = probe.right
@@ -243,9 +244,9 @@ class LinkedBST(AbstractCollection):
             """
             if top.left is None and top.right is None:
                 return 0
-            elif top.left is None:
+            if top.left is None:
                 return height1(top.right) + 1
-            elif top.right is None:
+            if top.right is None:
                 return height1(top.left) + 1
             return max(height1(top.left), height1(top.right)) + 1
 
@@ -263,7 +264,7 @@ class LinkedBST(AbstractCollection):
         Returns a list of the items in the tree, where low <= item <= high.
         """
         elements = list(self.inorder())
-        return elements[elements.index(low):elements.index(high)+1]
+        return elements[elements.index(low):elements.index(high) + 1]
 
     def rebalance(self):
         """
@@ -273,10 +274,10 @@ class LinkedBST(AbstractCollection):
 
         def rebalance1(nodes):
             if nodes:
-                mid = len(nodes)//2
+                mid = len(nodes) // 2
                 self.add(nodes[mid])
                 rebalance1(nodes[:mid])
-                rebalance1(nodes[mid+1:])
+                rebalance1(nodes[mid + 1:])
 
         lst = list(self.inorder())
         self.clear()
@@ -354,7 +355,7 @@ class LinkedBST(AbstractCollection):
             start = time()
             self.search_with_vocab(words, random_words)
             end = time()
-            vocab_result = end-start
+            vocab_result = end - start
 
             simple_tree = self.make_simp_tree(words)
             start = time()
